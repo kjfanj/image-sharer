@@ -3,13 +3,11 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static('public'));
 
+// Index route
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build/index.html'));
-});
-app.get('/123', (req, res) => {
-    res.status('200').send("Status: ok!");
 });
 
 
