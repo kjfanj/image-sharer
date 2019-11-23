@@ -3,7 +3,13 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Index route
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'client/build/index.html'));
+// });
+// app.use(express.static('client/public'));
 
 // Index route
 app.get('*', (req, res) => {
