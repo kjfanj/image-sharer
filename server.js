@@ -3,8 +3,8 @@ const path = require('path');
 
 const app = express();
 
-console.log(__dirname);
-// app.use(express.static(path.join(__dirname, 'client/public')));
+console.log(path.join(__dirname, 'client/public'));
+app.use(express.static(path.join(__dirname, 'client/public')));
 
 
 const port = process.env.PORT || 5000;
