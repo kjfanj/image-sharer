@@ -1,10 +1,16 @@
 import React from 'react';
-
-function App() {
+import { ThemeChoiceContext } from 'contexts/Context';
+const App = () => {
+  console.log("asdf")
   return (
-    <div>
-      asdf
-    </div>
+    <React.Fragment>
+      <ThemeChoiceContext.Consumer>
+        {(context) => (
+          <p>current context {context.state.isDark ? "is dark" : "not dark"}</p>
+        )}
+      </ThemeChoiceContext.Consumer>
+    </React.Fragment>
+
   );
 }
 
