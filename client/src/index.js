@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import GlobalStyles from 'style/globals';
+
 import ThemeChoiceProvider from 'providers/ThemeContextProvider';
+
+
+
+
 ReactDOM.render(
     <ThemeChoiceProvider>
-        <div>
-            <App />
-        </div>
+        <GlobalStyles />
+        <App />
     </ThemeChoiceProvider >
     , document.getElementById('root'));
 
