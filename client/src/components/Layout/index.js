@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-
+import NavBar from 'components/NavBar';
 
 
 export default class Layout extends Component {
     render() {
         return (
-            <div>
-
-            </div>
+            <React.Fragment>
+                <NavBar></NavBar>
+            </React.Fragment>
         )
     }
 }

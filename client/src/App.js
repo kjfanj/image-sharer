@@ -7,7 +7,7 @@ class App extends Component {
 
 
 
-  changeBackgroundColor = (isDark) => {
+  renderBackgroundColor = (isDark) => {
     if (isDark) {
       document.body.style = `background-color: ${dark.background};`;
     } else {
@@ -23,9 +23,9 @@ class App extends Component {
         <ThemeChoiceContext.Consumer>
           {(context) => (
             <ThemeProvider theme={context.state.isDark ? dark : light}>
-              {this.changeBackgroundColor(context.state.isDark)}
+              {this.renderBackgroundColor(context.state.isDark)}
               <Layout>
-                <p>something</p>
+
               </Layout>
             </ThemeProvider>
           )}
