@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
-import darklight from 'assets/darklight.png';
+
+import lightMode from 'assets/LightMode.png';
+import darkMode from 'assets/DarkMode.png';
 import githubDark from 'assets/GithubDark.png';
 import githubLight from 'assets/GithubLight.png';
+
 import { ThemeChoiceContext } from 'contexts/Context';
 
 const NavBarContainer = styled.div`
@@ -21,13 +24,15 @@ const ImageButton = styled.img`
     margin-right: 2rem;
     margin-left: 2rem;
     border-radius:50%;
+    cursor:pointer;
 `;
 
 const Title = styled.h1`
 
 `;
 
-const ExternalLink = styled.a`
+const Link = styled.a`
+
 `;
 
 export default class index extends Component {
@@ -36,11 +41,13 @@ export default class index extends Component {
             <ThemeChoiceContext.Consumer>
                 {context => (
                     <NavBarContainer>
-                        <ExternalLink href="https://github.com/kjfanj/image-sharer" target="_blank" >
+                        <Link href="https://github.com/kjfanj/image-sharer" target="_blank" >
                             <ImageButton src={context.state.isDark ? githubLight : githubDark} />
-                        </ExternalLink>
+                        </Link>
+
                         <Title >Image Sharer</Title>
-                        <ImageButton src={darklight} onClick={context.changeTheme}></ImageButton>
+
+                        <ImageButton src={context.state.isDark ? darkMode : lightMode} onClick={context.changeTheme} />
                     </NavBarContainer >
                 )}
             </ThemeChoiceContext.Consumer>
