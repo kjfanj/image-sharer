@@ -11,11 +11,13 @@ import { ThemeChoiceContext } from 'contexts/Context';
 const NavBarContainer = styled.div`
     display:flex;
     height:10vh;
+    width: 100vw;
     align-items: center;
     justify-content: space-between;
     background-color:${props => props.theme.backgroundSecondary};
     color:${props => props.theme.text};
     overflow:hidden;
+    position:fixed;
 `;
 
 const ImageButton = styled.img`
