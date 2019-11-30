@@ -12,6 +12,7 @@ const AddImagePlaceholder = styled.div`
     align-items: center;
     justify-content: center;
     cursor:pointer;
+    position: fixed;
     font-size:15px;
 `;
 
