@@ -5,10 +5,11 @@ import SearchBar from 'components/SearchBar';
 import ImageContainer from 'components/ImageContainer';
 
 const Body = styled.div`
-height:90vh;
+/* height:90vh; */
 display:flex;
 align-items: center;
 justify-content:center;
+margin:2rem;
 `;
 
 
