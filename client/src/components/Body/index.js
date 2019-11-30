@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import SearchBar from 'components/SearchBar';
+// import SearchBar from 'components/SearchBar';
 import ImageContainer from 'components/ImageContainer';
 
 const Body = styled.div`
-/* height:90vh; */
-display:flex;
-align-items: center;
-justify-content:center;
-margin:2rem;
+    display:flex;
+    align-items: center;
+    justify-content:center;
 `;
 
 

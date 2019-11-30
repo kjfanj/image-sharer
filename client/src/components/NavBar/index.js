@@ -28,7 +28,7 @@ const ImageButton = styled.img`
 `;
 
 const Title = styled.h1`
-
+    font-size:20px;
 `;
 
 const Link = styled.a`
