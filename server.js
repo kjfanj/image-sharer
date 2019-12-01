@@ -1,14 +1,33 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser')
 require('dotenv').config();
+
+
+var count = 0;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+// for json data from client
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
+
+// spa base route
+app.use(express.static(path.join(__dirname, 'client/build')));
 // Index route
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
+
+
+
+app.post('/test', (req, res) => {
+    console.log("working", count++);
+    console.log(req.body)
+    res.send({ testdata: "test mesasdfasdfsage" })
 });
 
 // const { Client } = require('pg')

@@ -10,7 +10,6 @@ flex-direction:column;
 
 const Padder = styled.div`
 padding-top:5vh;
-
 `;
 
 const ImageDisplayContainter = styled.div`

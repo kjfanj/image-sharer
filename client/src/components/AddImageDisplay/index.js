@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
-
+import axios from 'axios';
 
 const AddImagePlaceholder = styled.div`
     margin:1rem;
@@ -16,10 +16,22 @@ const AddImagePlaceholder = styled.div`
     font-size:15px;
 `;
 
+
+
+
 export default class index extends Component {
+    handleAddImage = async () => {
+        try {
+            const response = await axios.post('/test', { data: "123123123" });
+            console.log(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     render() {
         return (
-            <AddImagePlaceholder>
+            <AddImagePlaceholder onClick={this.handleAddImage}>
                 CLICK OR DRAG AN IMAGE HERE
             </AddImagePlaceholder>
         )
