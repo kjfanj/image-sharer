@@ -4,12 +4,10 @@ import AddImageDisplay from 'components/AddImageDisplay';
 import ImageDisplay from 'components/ImageDisplay';
 
 const ImageContainer = styled.div`
-display:flex;
-flex-direction:column;
-`;
-
-const Padder = styled.div`
-padding-top:5vh;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
 `;
 
 const ImageDisplayContainter = styled.div`
@@ -19,21 +17,26 @@ const ImageDisplayContainter = styled.div`
     background-color:${props => props.theme.backgroundSecondary};
     color:${props => props.theme.text};
     display: flex;
+    flex-direction:column;
     align-items: center;
     justify-content: center;
-    margin-top:10vh;
 `;
 
-const imageList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 
 export default class index extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            imageList: [12, 3, 4, 56, 7, 89,]
+        }
+    }
     render() {
         return (
             <ImageContainer>
                 <AddImageDisplay />
-                <Padder />
-                {imageList.map((i) => {
+                {this.state.imageList.map((i) => {
                     return (
                         <React.Fragment key={i}>
                             <ImageDisplayContainter key={i}>

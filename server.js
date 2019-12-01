@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { Client } = require('pg');
+
+// for env variable
 require('dotenv').config();
-
-
-var count = 0;
 
 const app = express();
 
@@ -24,13 +24,12 @@ app.get('*', (req, res) => {
 
 
 
-app.post('/test', (req, res) => {
-    console.log("working", count++);
-    console.log(req.body)
-    res.send({ testdata: "test mesasdfasdfsage" })
+app.post('/addimage', (req, res) => {
+    // console.log(req.body);
+    console.log("clicked addimage")
+    res.send({})
 });
 
-// const { Client } = require('pg')
 
 // const client = new Client({
 //     user: process.env.RDS_USERNAME,
@@ -46,4 +45,3 @@ app.post('/test', (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log('App is listening on port ' + port);

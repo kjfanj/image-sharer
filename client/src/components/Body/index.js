@@ -3,11 +3,7 @@ import styled from 'styled-components';
 
 // import SearchBar from 'components/SearchBar';
 import ImageContainer from 'components/ImageContainer';
-
 const Body = styled.div`
-    display:flex;
-    align-items: center;
-    justify-content:center;
     padding-top:10vh;
 `;
 
