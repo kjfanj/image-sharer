@@ -11,10 +11,10 @@ const ImageDisplay = styled.img`
     height:100%;
 `;
 
-const index = () => {
+const index = (props) => {
     return (
         <ImageDisplayContainer>
-            <ImageDisplay src="https://via.placeholder.com/600x600" />
+            <ImageDisplay src={props.src} />
         </ImageDisplayContainer>
     );
 }

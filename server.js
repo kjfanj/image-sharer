@@ -27,7 +27,7 @@ app.get('*', (req, res) => {
 app.post('/addimage', (req, res) => {
     // console.log(req.body);
     console.log("clicked addimage")
-    res.send({})
+    res.send({ data: "testdatafromserver" })
 });
 
 
