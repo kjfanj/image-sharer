@@ -32,7 +32,7 @@ const AddImageInput = styled.input`
     display: none;
 `;
 
-const addImageWrapper = styled.form``;
+const AddImageWrapper = styled.form``;
 
 const AddImagePlaceholder = styled.label`
     margin-top:2vh;
@@ -96,15 +96,15 @@ class index extends Component {
     render() {
         return (
             <ImageContainer>
-                <addImageWrapper>
+                <AddImageWrapper>
                     <AddImagePlaceholder >
-                        CLICK OR DRAG AN IMAGE HERE
+                        CLICK HERE TO UPLOAD
                     <AddImageInput
                             type="file"
                             onChange={(e) => this._handleImageChange(e)}
                         />
                     </AddImagePlaceholder>
-                </addImageWrapper>
+                </AddImageWrapper>
                 {
                     this.state.imagePreviewUrls.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
@@ -118,17 +118,6 @@ class index extends Component {
                             )
                         })
                 }
-                {/* <div className="previewComponent">
-                    <form onSubmit={(e) => this._handleSubmit(e)}>
-                        <input
-                            type="file"
-                            onChange={(e) => this._handleImageChange(e)} />
-                        <button className="submitButton"
-                            type="submit"
-                            onClick={(e) => this._handleSubmit(e)}>Upload Image</button>
-                    </form>
-
-                </div> */}
             </ImageContainer>
         )
     }

@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const { Client } = require('pg');
-
+const uuidv4 = require('uuid/v4');
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
 // for env variable
 require('dotenv').config();
 
@@ -23,14 +25,39 @@ app.get('*', (req, res) => {
 });
 
 
-
+// current test route
 app.post('/addimage', (req, res) => {
     // console.log(req.body);
     console.log("clicked addimage")
     res.send({ data: "testdatafromserver" })
 });
 
+// aws s3 get presigned
+// async function getPresignedUploadUrl(bucket, directory) {
+//     const key = `${directory}/${uuidv4()}`;
+//     const url = await s3
+//         .getSignedUrl('putObject', {
+//             Bucket: bucket,
+//             Key: key,
+//             ContentType: 'image/*',
+//             Expires: 300,
+//         })
+//         .promise();
+//     return url;
+// }
 
+// console.log(getPresignedUploadUrl("image-sharer-store", "UserUpload"))
+
+
+var params = { Bucket: 'image-sharer-store', Key: 'key' };
+s3.getSignedUrl('putObject', params, function (err, url) {
+    console.log('The URL is', url);
+});
+
+
+
+0
+// connect to aws rds postgres db
 // const client = new Client({
 //     user: process.env.RDS_USERNAME,
 //     host: process.env.RDS_HOSTNAME,
