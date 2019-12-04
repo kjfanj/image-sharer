@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 const { Client } = require('pg');
 const uuidv4 = require('uuid/v4');
 const AWS = require('aws-sdk');
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_S3_KEY,
+    secretAccessKey: process.env.AWS_S3_SECRET,
+    region: process.env.AWS_S3_REGION
+});
 const s3 = new AWS.S3();
 // for env variable
 require('dotenv').config();
@@ -49,10 +55,19 @@ app.post('/addimage', (req, res) => {
 // console.log(getPresignedUploadUrl("image-sharer-store", "UserUpload"))
 
 
-var params = { Bucket: 'image-sharer-store', Key: 'key' };
-s3.getSignedUrl('putObject', params, function (err, url) {
-    console.log('The URL is', url);
-});
+
+function getSignedUrlTest() {
+    let params = { Bucket: process.env.AWS_S3_BUCKETNAME, Key: process.env.AWS_S3_KEY };
+    s3.getSignedUrl('putObject', params, function (err, url) {
+        if (err) {
+            console.log(err)
+        }
+        console.log('The URL is', url);
+
+    });
+}
+
+console.log(getSignedUrlTest());
 
 
 
