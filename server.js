@@ -5,11 +5,8 @@ const { Client } = require('pg');
 const uuidv4 = require('uuid/v4');
 const AWS = require('aws-sdk');
 
-AWS.config.update({
-    accessKeyId: process.env.AWS_S3_KEY,
-    secretAccessKey: process.env.AWS_S3_SECRET,
-    region: process.env.AWS_S3_REGION
-});
+// load config for aws
+AWS.config.loadFromPath('./AwsConfig.json');
 const s3 = new AWS.S3();
 // for env variable
 require('dotenv').config();
@@ -38,32 +35,16 @@ app.post('/addimage', (req, res) => {
     res.send({ data: "testdatafromserver" })
 });
 
-// aws s3 get presigned
-// async function getPresignedUploadUrl(bucket, directory) {
-//     const key = `${directory}/${uuidv4()}`;
-//     const url = await s3
-//         .getSignedUrl('putObject', {
-//             Bucket: bucket,
-//             Key: key,
-//             ContentType: 'image/*',
-//             Expires: 300,
-//         })
-//         .promise();
-//     return url;
-// }
-
-// console.log(getPresignedUploadUrl("image-sharer-store", "UserUpload"))
-
-
-
+// get presigned for user to upload
 function getSignedUrlTest() {
     let params = { Bucket: process.env.AWS_S3_BUCKETNAME, Key: process.env.AWS_S3_KEY };
+
     s3.getSignedUrl('putObject', params, function (err, url) {
         if (err) {
             console.log(err)
         }
         console.log('The URL is', url);
-
+        return url;
     });
 }
 
@@ -71,18 +52,18 @@ console.log(getSignedUrlTest());
 
 
 
-0
+
 // connect to aws rds postgres db
-// const client = new Client({
-//     user: process.env.RDS_USERNAME,
-//     host: process.env.RDS_HOSTNAME,
-//     database: process.env.RDS_DB_NAME,
-//     password: process.env.RDS_PASSWORD,
-//     port: process.env.RDS_PORT,
-// })
-// client.connect()
-//     .then(() => console.log("connected to database successfully"))
-//     .catch(err => console.log(err))
+const client = new Client({
+    user: process.env.RDS_USERNAME,
+    host: process.env.RDS_HOSTNAME,
+    database: process.env.RDS_DB_NAME,
+    password: process.env.RDS_PASSWORD,
+    port: process.env.RDS_PORT,
+})
+client.connect()
+    .then(() => console.log("connected to database successfully"))
+    .catch(err => console.log(err))
 
 const port = process.env.PORT || 5000;
 app.listen(port);
