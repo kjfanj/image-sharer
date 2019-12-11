@@ -35,7 +35,7 @@ const AddImageInput = styled.input`
 const AddImageWrapper = styled.form`
     background-color:${props => props.theme.backgroundSecondary};
     margin: 1rem;
-
+    text-align: center; 
 `;
 
 const AddImagePlaceholder = styled.label`
@@ -54,6 +54,7 @@ const AddImagePlaceholder = styled.label`
 
 const DescriptionInput = styled.textarea`
     margin: 1rem;
+    padding: 1rem;
     resize: none;
     width:80vw;
     height:10vh;
@@ -63,6 +64,15 @@ const DescriptionInput = styled.textarea`
     align-items: center;
     justify-content: center;
     font-size:15px;
+`;
+
+const Button = styled.button`
+  background: ${props => props.theme.background};
+  color: ${props => props.theme.text};
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border-radius: 3px;
 `;
 
 class index extends Component {
@@ -122,8 +132,8 @@ class index extends Component {
                         />
 
                     </AddImagePlaceholder>
-                    <DescriptionInput placeholder="Enter description here..." />
-
+                    <DescriptionInput type="text" placeholder="Enter description here..." />
+                    <Button>UPLOAD</Button>
                 </AddImageWrapper>
                 {
                     this.state.imagePreviewUrls.length === 0 ?
