@@ -9,6 +9,7 @@ const ImageDisplay = styled.img`
     width:100%;
     max-width:80vw;
     height:100%;
+    padding:10px;
 `;
 
 const index = (props) => {

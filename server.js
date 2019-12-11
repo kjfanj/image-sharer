@@ -37,28 +37,10 @@ app.post('/addimage', (req, res) => {
     res.send({ data: "testdatafromserver" })
 });
 
-// aws s3 get presigned
-// async function getPresignedUploadUrl(bucket, directory) {
-//     const key = `${directory}/${uuidv4()}`;
-//     const url = await s3
-//         .getSignedUrl('putObject', {
-//             Bucket: bucket,
-//             Key: key,
-//             ContentType: 'image/*',
-//             Expires: 300,
-//         })
-//         .promise();
-//     return url;
-// }
 
-// console.log(getPresignedUploadUrl("image-sharer-store", "UserUpload"))
-
-
+// get presigned url for user to upload
 function getSignedUrlTest() {
     let params = { Bucket: process.env.AWS_S3_BUCKETNAME, Key: process.env.AWS_S3_KEY, ContentType: 'image/*', Expires: 300, };
-    console.log("***************************************************************************************")
-
-    console.log(params)
     s3.getSignedUrl('putObject', params, function (err, url) {
         if (err) {
             console.log(err)
@@ -68,7 +50,7 @@ function getSignedUrlTest() {
     });
 }
 
-console.log(getSignedUrlTest());
+// console.log(getSignedUrlTest());
 
 
 

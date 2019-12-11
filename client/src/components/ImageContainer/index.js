@@ -32,19 +32,36 @@ const AddImageInput = styled.input`
     display: none;
 `;
 
-const AddImageWrapper = styled.form``;
+const AddImageWrapper = styled.form`
+    background-color:${props => props.theme.backgroundSecondary};
+    margin: 1rem;
+
+`;
 
 const AddImagePlaceholder = styled.label`
-    margin-top:2vh;
+    margin: 1rem;
+
     width:80vw;
     height:10vh;
-    background-color:${props => props.theme.backgroundSecondary};
+    color:${props => props.theme.text};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor:pointer;
+    font-size:15px;
+    border: 1px solid black;
+`;
+
+const DescriptionInput = styled.textarea`
+    margin: 1rem;
+    resize: none;
+    width:80vw;
+    height:10vh;
     color:${props => props.theme.text};
     border-color:${props => props.theme.border};
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor:pointer;
     font-size:15px;
 `;
 
@@ -98,12 +115,15 @@ class index extends Component {
             <ImageContainer>
                 <AddImageWrapper>
                     <AddImagePlaceholder >
-                        CLICK HERE TO UPLOAD
-                    <AddImageInput
+                        CHOOSE IMAGE HERE
+                        <AddImageInput
                             type="file"
                             onChange={(e) => this._handleImageChange(e)}
                         />
+
                     </AddImagePlaceholder>
+                    <DescriptionInput placeholder="Enter description here..." />
+
                 </AddImageWrapper>
                 {
                     this.state.imagePreviewUrls.length === 0 ?
@@ -111,8 +131,8 @@ class index extends Component {
                         this.state.imagePreviewUrls.map((i) => {
                             return (
                                 <React.Fragment key={i}>
-                                    <ImageDisplayContainter key={i}>
-                                        <ImageDisplay key={i} src={i} />
+                                    <ImageDisplayContainter>
+                                        <ImageDisplay src={i} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )
