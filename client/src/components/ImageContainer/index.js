@@ -40,7 +40,6 @@ const AddImageWrapper = styled.form`
 
 const AddImagePlaceholder = styled.label`
     margin: 1rem;
-
     width:80vw;
     height:10vh;
     color:${props => props.theme.text};
@@ -49,7 +48,8 @@ const AddImagePlaceholder = styled.label`
     justify-content: center;
     cursor:pointer;
     font-size:15px;
-    border: 1px solid black;
+    border: 3px solid ${props => props.theme.border};
+    border-radius: 3px;
 `;
 
 const DescriptionInput = styled.textarea`
@@ -59,10 +59,12 @@ const DescriptionInput = styled.textarea`
     width:80vw;
     height:10vh;
     color:${props => props.theme.text};
-    border-color:${props => props.theme.border};
+    background-color:${props => props.theme.backgroundSecondary};
+    border: 3px solid ${props => props.theme.border};
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
     font-size:15px;
 `;
 
@@ -70,9 +72,12 @@ const Button = styled.button`
   background: ${props => props.theme.background};
   color: ${props => props.theme.text};
   font-size: 1em;
-  margin: 1em;
+  margin-bottom: 1em;
   padding: 0.25em 1em;
   border-radius: 3px;
+  cursor:pointer;
+
+  border:3px solid ${props => props.theme.background}; 
 `;
 
 class index extends Component {
@@ -132,10 +137,15 @@ class index extends Component {
                         />
 
                     </AddImagePlaceholder>
+                    {this.state.imagePreviewUrl ?
+                        <ImageDisplayContainter>
+                            <ImageDisplay src={this.state.imagePreviewUrl} />
+                        </ImageDisplayContainter> : ""
+                    }
                     <DescriptionInput type="text" placeholder="Enter description here..." />
                     <Button>UPLOAD</Button>
                 </AddImageWrapper>
-                {
+                {/* {
                     this.state.imagePreviewUrls.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
                         this.state.imagePreviewUrls.map((i) => {
@@ -147,7 +157,7 @@ class index extends Component {
                                 </React.Fragment>
                             )
                         })
-                }
+                } */}
             </ImageContainer>
         )
     }
