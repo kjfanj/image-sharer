@@ -32,7 +32,7 @@ app.get('*', (req, res) => {
 
 // current test route
 // get presignedURL and send it back to client
-app.post('/addimage', (req, res) => {
+app.post('/addimage', async (req, res) => {
     console.log("client clicked upload image")
     console.log(req.body);
     let presignedURL = await getSignedUrl();
@@ -47,14 +47,19 @@ app.post('/addimage', (req, res) => {
 // get presigned url for user to upload
 getSignedUrl = () => {
     return new Promise((resolve, reject) => {
-        let params = { Bucket: process.env.AWS_S3_BUCKETNAME, Key: process.env.AWS_S3_KEY, ContentType: 'image/*', Expires: 300 };
-        s3.getSignedUrl('putObject', params, function (err, url) {
+        let params = {
+            Bucket: process.env.AWS_S3_BUCKETNAME,
+            Key: "testingFolder",
+            ContentType: 'image/*',
+            Expires: 300
+        };
+        s3.getSignedUrl('putObject', params, (err, url) => {
             if (err) {
                 reject(err)
             }
             resolve(url);
         });
-    })
+    });
 
 
 }

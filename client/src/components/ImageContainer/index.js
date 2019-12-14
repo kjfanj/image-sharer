@@ -23,10 +23,10 @@ const ImageDisplayContainter = styled.div`
     justify-content: center;
 `;
 
-const NoImage = styled.div`
-    padding-top: 2vh;
-    color:${props => props.theme.text};
-`;
+// const NoImage = styled.div`
+//     padding-top: 2vh;
+//     color:${props => props.theme.text};
+// `;
 
 const AddImageInput = styled.input`
     display: none;
@@ -87,8 +87,8 @@ class index extends Component {
         this.state = {
             files: [],
             imagePreviewUrls: [],
-            file: '',
-            imagePreviewUrl: '',
+            file: "",
+            imagePreviewUrl: "",
             description: ""
         }
     }
@@ -96,8 +96,9 @@ class index extends Component {
     handleAddImage = async () => {
         try {
             const response = await axios.post('/addimage', { data: this.state.description });
-            console.log(`received presigned from server`)
-            console.log(response.data);
+            console.log(`received signedURL from server`)
+            console.log(response.data.data);
+            return response.data.data
         } catch (err) {
             console.log(err);
         }
@@ -107,11 +108,28 @@ class index extends Component {
         this.setState({ description: e.target.value });
     }
 
-    _handleSubmit = e => {
+    _handleSubmit = async e => {
         e.preventDefault();
         console.log("submitting")
         console.log('handle uploading-', this.state.file);
-        this.handleAddImage();
+        let signedURL = await this.handleAddImage();
+        console.log(`posting from _handleSubmit to ${signedURL}`)
+        axios.put(signedURL,
+            this.state.imagePreviewUrl,
+            {
+                headers: {
+                    'Content-Type': 'image/*'
+                }
+            }
+        ).then(res => {
+            console.log(`got res from s3`)
+            console.log(res);
+
+        }).catch(err => {
+            console.log(err)
+        })
+
+        this.setState({ description: "", file: "", imagePreviewUrl: "" });
     }
 
     _handleImageChange = e => {
@@ -134,6 +152,8 @@ class index extends Component {
         }
         reader.readAsDataURL(file)
     }
+
+
 
     render() {
         return (
