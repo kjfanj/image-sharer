@@ -88,25 +88,33 @@ class index extends Component {
             files: [],
             imagePreviewUrls: [],
             file: '',
-            imagePreviewUrl: ''
+            imagePreviewUrl: '',
+            description: ""
         }
     }
-
+    // maybe send uuid from here
     handleAddImage = async () => {
         try {
-            const response = await axios.post('/addimage', { data: "123123123" });
+            const response = await axios.post('/addimage', { data: this.state.description });
+            console.log(`received presigned from server`)
             console.log(response.data);
         } catch (err) {
             console.log(err);
         }
     }
 
-    _handleSubmit(e) {
-        e.preventDefault();
-        console.log('handle uploading-', this.state.file);
+    handleDescriptionChange = e => {
+        this.setState({ description: e.target.value });
     }
 
-    _handleImageChange(e) {
+    _handleSubmit = e => {
+        e.preventDefault();
+        console.log("submitting")
+        console.log('handle uploading-', this.state.file);
+        this.handleAddImage();
+    }
+
+    _handleImageChange = e => {
         e.preventDefault();
 
         let reader = new FileReader();
@@ -114,21 +122,25 @@ class index extends Component {
 
 
         reader.onloadend = () => {
+            console.log("loading image")
             this.setState({
                 files: [file, ...this.state.files],
                 imagePreviewUrls: [reader.result, ...this.state.imagePreviewUrls],
                 file: file,
                 imagePreviewUrl: reader.result
             });
+            console.log("from _handleImageChange")
+            console.log(this.state.file)
         }
-
         reader.readAsDataURL(file)
     }
 
     render() {
         return (
             <ImageContainer>
-                <AddImageWrapper>
+
+                {/* wrapper form for adding image */}
+                <AddImageWrapper onSubmit={this._handleSubmit}>
                     <AddImagePlaceholder >
                         CHOOSE IMAGE HERE
                         <AddImageInput
@@ -137,13 +149,20 @@ class index extends Component {
                         />
 
                     </AddImagePlaceholder>
+                    {/* preview the image that is about to be uploaded */}
                     {this.state.imagePreviewUrl ?
                         <ImageDisplayContainter>
                             <ImageDisplay src={this.state.imagePreviewUrl} />
                         </ImageDisplayContainter> : ""
                     }
-                    <DescriptionInput type="text" placeholder="Enter description here..." />
-                    <Button>UPLOAD</Button>
+                    {/* allow image to have description */}
+                    <DescriptionInput
+                        type="text"
+                        value={this.state.description}
+                        onChange={this.handleDescriptionChange}
+                        placeholder="Enter description here..."
+                    />
+                    <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
                 {/* {
                     this.state.imagePreviewUrls.length === 0 ?

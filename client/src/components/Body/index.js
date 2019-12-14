@@ -13,7 +13,6 @@ export default class index extends Component {
         return (
             <React.Fragment>
                 <Body>
-                    {/* <SearchBar /> */}
                     <ImageContainer />
                 </Body>
             </React.Fragment>
