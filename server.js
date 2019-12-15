@@ -6,14 +6,6 @@ const uuidv4 = require('uuid/v4');
 const AWS = require('aws-sdk');
 
 // load aws config
-// two ways of setting credentials
-
-// 1. recommended:  
-// process.env.AWS_SDK_LOAD_CONFIG = true;
-// var credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE_NAME });
-// AWS.config.credentials = credentials;
-
-// 2. use local config
 AWS.config.loadFromPath('./AwsConfig.json');
 const s3 = new AWS.S3();
 
@@ -41,19 +33,32 @@ app.get('*', (req, res) => {
 
 
 // get presignedURL and send it back to client
-app.post('/addimage', async (req, res) => {
-    console.log("client clicked upload image")
-    console.log(req.body);
+app.post('/getsignedurl', async (req, res) => {
+    let imageDescription = req.body.imageDescription;
     let keyPath = `${uuidv4()}-${req.body.filename}`;
-    console.log(`keyPath: ${keyPath}`)
-    let presignedURL = await getSignedUrl(keyPath);
-    console.log(`post request attemptig to send------------------------ \n${presignedURL}`);
-
-
-    res.send({ data: presignedURL })
-
+    try {
+        let signedUrl = await getSignedUrl(keyPath);
+        console.log(`client requesting signedUrl`);
+        console.log(`*************** image description ***************`);
+        console.log(`"${imageDescription}"`);
+        console.log(`s3 path is: https://image-sharer-app.s3.us-east-2.amazonaws.com/${keyPath}`);
+        console.log(`*************** signedUrl ***************`);
+        console.log(`${signedUrl}`);
+        console.log(`sending signedUrl back to client`);
+        res.send({ signedUrl: signedUrl })
+    } catch (err) {
+        console.log(`failed to get signedUrl from s3`)
+        console.log(err);
+    }
 });
 
+
+// get presignedURL and send it back to client
+// app.post('/addimage', async (req, res) => {
+//     let keyPath = `${uuidv4()}-${req.body.filename}`;
+//     let presignedURL = await getSignedUrl(keyPath);
+//     res.send({ data: presignedURL })
+// });
 
 // get presigned url for user to upload
 getSignedUrl = (path) => {
@@ -66,10 +71,8 @@ getSignedUrl = (path) => {
         };
         s3.getSignedUrl('putObject', params, (err, url) => {
             if (err) {
-                console.log(err);
                 reject(err)
             }
-            console.log(url)
             resolve(url);
         });
     });

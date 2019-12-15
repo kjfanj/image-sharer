@@ -93,10 +93,10 @@ class index extends Component {
         }
     }
     // maybe send uuid from here
-    handleAddImage = async () => {
+    requestSignedUrl = async () => {
         try {
-            const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
-            return response.data.data
+            const response = await axios.post('/getsignedurl', { imageDescription: this.state.description, filename: this.state.file.name });
+            return response.data.signedUrl;
         } catch (err) {
             console.log(err);
         }
@@ -108,7 +108,7 @@ class index extends Component {
 
     _handleSubmit = async e => {
         e.preventDefault();
-        let signedURL = await this.handleAddImage();
+        let signedURL = await this.requestSignedUrl();
         axios.put(signedURL,
             this.state.file,
             {
@@ -117,12 +117,19 @@ class index extends Component {
                 }
             }
         ).then(res => {
-            console.log(res);
+            // console.log(res);
+            if (res.status === 200) {
+                console.log("successfully uploaded to s3")
+                try {
+                    // const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
+                } catch (err) {
+                    console.log(`failed to update database`)
+                }
 
+            }
         }).catch(err => {
             console.log(err)
         })
-        // clean up
         this.setState({ description: "", file: "", imagePreviewUrl: "" });
     }
 
