@@ -35,12 +35,12 @@ app.post('/getsignedurl', async (req, res) => {
     }
 });
 
-// get presignedURL and send it back to client
-// app.post('/addimage', async (req, res) => {
-//     let keyPath = `${uuidv4()}-${req.body.filename}`;
-//     let presignedURL = await getSignedUrl(keyPath);
-//     res.send({ data: presignedURL })
-// });
+// check if client successfully added image
+app.post('/addimage', async (req, res) => {
+    let keyPath = `${uuidv4()}-${req.body.filename}`;
+    let presignedURL = await getSignedUrl(keyPath);
+    res.send({ data: presignedURL })
+});
 
 // connect to aws rds postgres db
 // const client = new Client({

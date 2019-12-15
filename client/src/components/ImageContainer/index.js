@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
 import ImageDisplay from 'components/ImageDisplay';
+import { AddImageInput, AddImageWrapper, AddImagePlaceholder, DescriptionInput, Button } from 'components/ImageUploadPreview';
 
 const ImageContainer = styled.div`
     display:flex;
@@ -27,58 +27,6 @@ const ImageDisplayContainter = styled.div`
 //     padding-top: 2vh;
 //     color:${props => props.theme.text};
 // `;
-
-const AddImageInput = styled.input`
-    display: none;
-`;
-
-const AddImageWrapper = styled.form`
-    background-color:${props => props.theme.backgroundSecondary};
-    margin: 1rem;
-    text-align: center; 
-`;
-
-const AddImagePlaceholder = styled.label`
-    margin: 1rem;
-    width:80vw;
-    height:10vh;
-    color:${props => props.theme.text};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor:pointer;
-    font-size:15px;
-    border: 3px solid ${props => props.theme.border};
-    border-radius: 3px;
-`;
-
-const DescriptionInput = styled.textarea`
-    margin: 1rem;
-    padding: 1rem;
-    resize: none;
-    width:80vw;
-    height:10vh;
-    color:${props => props.theme.text};
-    background-color:${props => props.theme.backgroundSecondary};
-    border: 3px solid ${props => props.theme.border};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    font-size:15px;
-`;
-
-const Button = styled.button`
-  background: ${props => props.theme.background};
-  color: ${props => props.theme.text};
-  font-size: 1em;
-  margin-bottom: 1em;
-  padding: 0.25em 1em;
-  border-radius: 3px;
-  cursor:pointer;
-
-  border:3px solid ${props => props.theme.background}; 
-`;
 
 class index extends Component {
 
@@ -126,7 +74,6 @@ class index extends Component {
                     } catch (err) {
                         console.log(`failed to update database`)
                     }
-
                 }
             }).catch(err => {
                 console.log(err)
