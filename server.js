@@ -6,10 +6,18 @@ const uuidv4 = require('uuid/v4');
 const AWS = require('aws-sdk');
 
 // load aws config
-AWS.config.loadFromPath('./AwsConfig.json');
+// two ways of setting credentials
 
+// 1. recommended:  
+process.env.AWS_SDK_LOAD_CONFIG = true;
+var credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE_NAME });
+AWS.config.credentials = credentials;
 
+// 2. use local config
+// AWS.config.loadFromPath('./AwsConfig.json');
 const s3 = new AWS.S3();
+
+
 
 // for env variable
 require('dotenv').config();
@@ -34,12 +42,12 @@ app.get('*', (req, res) => {
 
 // get presignedURL and send it back to client
 app.post('/addimage', async (req, res) => {
-    // console.log("client clicked upload image")
-    // console.log(req.body);
+    console.log("client clicked upload image")
+    console.log(req.body);
     let keyPath = `${uuidv4()}-${req.body.filename}`;
-    // console.log(`keyPath: ${keyPath}`)
+    console.log(`keyPath: ${keyPath}`)
     let presignedURL = await getSignedUrl(keyPath);
-    // console.log(`post request attemptig to send ${presignedURL}`);
+    console.log(`post request attemptig to send------------------------ \n${presignedURL}`);
 
 
     res.send({ data: presignedURL })
@@ -58,8 +66,10 @@ getSignedUrl = (path) => {
         };
         s3.getSignedUrl('putObject', params, (err, url) => {
             if (err) {
+                console.log(err);
                 reject(err)
             }
+            console.log(url)
             resolve(url);
         });
     });
