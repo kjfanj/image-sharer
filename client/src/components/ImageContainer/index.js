@@ -95,9 +95,7 @@ class index extends Component {
     // maybe send uuid from here
     handleAddImage = async () => {
         try {
-            const response = await axios.post('/addimage', { data: this.state.description });
-            console.log(`received signedURL from server`)
-            console.log(response.data.data);
+            const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
             return response.data.data
         } catch (err) {
             console.log(err);
@@ -110,25 +108,21 @@ class index extends Component {
 
     _handleSubmit = async e => {
         e.preventDefault();
-        console.log("submitting")
-        console.log('handle uploading-', this.state.file);
         let signedURL = await this.handleAddImage();
-        console.log(`posting from _handleSubmit to ${signedURL}`)
         axios.put(signedURL,
-            this.state.imagePreviewUrl,
+            this.state.file,
             {
                 headers: {
-                    'Content-Type': 'image/*'
+                    'content-type': 'multipart/form-data'
                 }
             }
         ).then(res => {
-            console.log(`got res from s3`)
             console.log(res);
 
         }).catch(err => {
             console.log(err)
         })
-
+        // clean up
         this.setState({ description: "", file: "", imagePreviewUrl: "" });
     }
 
@@ -140,15 +134,12 @@ class index extends Component {
 
 
         reader.onloadend = () => {
-            console.log("loading image")
             this.setState({
                 files: [file, ...this.state.files],
                 imagePreviewUrls: [reader.result, ...this.state.imagePreviewUrls],
                 file: file,
                 imagePreviewUrl: reader.result
             });
-            console.log("from _handleImageChange")
-            console.log(this.state.file)
         }
         reader.readAsDataURL(file)
     }

@@ -35,7 +35,9 @@ app.get('*', (req, res) => {
 app.post('/addimage', async (req, res) => {
     console.log("client clicked upload image")
     console.log(req.body);
-    let presignedURL = await getSignedUrl();
+    let keyPath = `${uuidv4()}-${req.body.filename}`;
+    console.log(`keyPath: ${keyPath}`)
+    let presignedURL = await getSignedUrl(keyPath);
     console.log(`post request attemptig to send ${presignedURL}`);
 
 
@@ -45,11 +47,11 @@ app.post('/addimage', async (req, res) => {
 
 
 // get presigned url for user to upload
-getSignedUrl = () => {
+getSignedUrl = (path) => {
     return new Promise((resolve, reject) => {
         let params = {
             Bucket: process.env.AWS_S3_BUCKETNAME,
-            Key: "testingFolder",
+            Key: path,
             ContentType: 'image/*',
             Expires: 300
         };
