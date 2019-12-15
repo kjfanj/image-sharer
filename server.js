@@ -3,15 +3,15 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const { Client } = require('pg');
 const uuidv4 = require('uuid/v4');
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 
 // load aws config
-AWS.config.loadFromPath('./AwsConfig.json');
+// AWS.config.loadFromPath('./AwsConfig.json');
 
 
-const s3 = new AWS.S3();
+// const s3 = new AWS.S3();
 // for env variable
-require('dotenv').config();
+// require('dotenv').config();
 
 const app = express();
 
@@ -32,43 +32,37 @@ app.get('*', (req, res) => {
 
 // current test route
 // get presignedURL and send it back to client
-app.post('/addimage', async (req, res) => {
-    console.log("client clicked upload image")
-    console.log(req.body);
-    let keyPath = `${uuidv4()}-${req.body.filename}`;
-    console.log(`keyPath: ${keyPath}`)
-    let presignedURL = await getSignedUrl(keyPath);
-    console.log(`post request attemptig to send ${presignedURL}`);
+// app.post('/addimage', async (req, res) => {
+//     // console.log("client clicked upload image")
+//     // console.log(req.body);
+//     let keyPath = `${uuidv4()}-${req.body.filename}`;
+//     // console.log(`keyPath: ${keyPath}`)
+//     let presignedURL = await getSignedUrl(keyPath);
+//     // console.log(`post request attemptig to send ${presignedURL}`);
 
 
-    res.send({ data: presignedURL })
+//     res.send({ data: presignedURL })
 
-});
+// });
 
 
 // get presigned url for user to upload
-getSignedUrl = (path) => {
-    return new Promise((resolve, reject) => {
-        let params = {
-            Bucket: process.env.AWS_S3_BUCKETNAME,
-            Key: path,
-            ContentType: 'image/*',
-            Expires: 300
-        };
-        s3.getSignedUrl('putObject', params, (err, url) => {
-            if (err) {
-                reject(err)
-            }
-            resolve(url);
-        });
-    });
-
-
-}
-
-// console.log(getSignedUrl());
-
-
+// getSignedUrl = (path) => {
+//     return new Promise((resolve, reject) => {
+//         let params = {
+//             Bucket: process.env.AWS_S3_BUCKETNAME,
+//             Key: path,
+//             ContentType: 'image/*',
+//             Expires: 300
+//         };
+//         s3.getSignedUrl('putObject', params, (err, url) => {
+//             if (err) {
+//                 reject(err)
+//             }
+//             resolve(url);
+//         });
+//     });
+// }
 
 
 // connect to aws rds postgres db
