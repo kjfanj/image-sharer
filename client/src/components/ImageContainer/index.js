@@ -108,29 +108,33 @@ class index extends Component {
 
     _handleSubmit = async e => {
         e.preventDefault();
-        let signedURL = await this.requestSignedUrl();
-        axios.put(signedURL,
-            this.state.file,
-            {
-                headers: {
-                    'content-type': 'multipart/form-data'
+        try {
+            let signedURL = await this.requestSignedUrl();
+            axios.put(signedURL,
+                this.state.file,
+                {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
                 }
-            }
-        ).then(res => {
-            // console.log(res);
-            if (res.status === 200) {
-                console.log("successfully uploaded to s3")
-                try {
-                    // const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
-                } catch (err) {
-                    console.log(`failed to update database`)
-                }
+            ).then(res => {
+                if (res.status === 200) {
+                    // TODO - display successfully uploaded to s3
+                    //      - hit route to insert into database
+                    try {
+                        // const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
+                    } catch (err) {
+                        console.log(`failed to update database`)
+                    }
 
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-        this.setState({ description: "", file: "", imagePreviewUrl: "" });
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+            this.setState({ description: "", file: "", imagePreviewUrl: "" });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     _handleImageChange = e => {
