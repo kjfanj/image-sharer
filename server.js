@@ -9,12 +9,12 @@ const AWS = require('aws-sdk');
 // two ways of setting credentials
 
 // 1. recommended:  
-process.env.AWS_SDK_LOAD_CONFIG = true;
-var credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE_NAME });
-AWS.config.credentials = credentials;
+// process.env.AWS_SDK_LOAD_CONFIG = true;
+// var credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE_NAME });
+// AWS.config.credentials = credentials;
 
 // 2. use local config
-// AWS.config.loadFromPath('./AwsConfig.json');
+AWS.config.loadFromPath('./AwsConfig.json');
 const s3 = new AWS.S3();
 
 
