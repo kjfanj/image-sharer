@@ -56,7 +56,12 @@ class index extends Component {
 
     _handleSubmit = async e => {
         e.preventDefault();
+        if (!this.state.file || !this.state.imagePreviewUrl) {
+            alert("Please select an image!!!")
+            return;
+        }
         try {
+            // attempting to post to s3
             let signedURL = await this.requestSignedUrl();
             axios.put(signedURL,
                 this.state.file,
@@ -66,14 +71,21 @@ class index extends Component {
                     }
                 }
             ).then(res => {
+                // response from s3
                 if (res.status === 200) {
-                    // TODO - display successfully uploaded to s3
-                    //      - hit route to insert into database
-                    try {
-                        // const response = await axios.post('/addimage', { data: this.state.description, filename: this.state.file.name });
-                    } catch (err) {
-                        console.log(`failed to update database`)
-                    }
+                    // notify backend image upload success
+                    console.log(`successfully uploaded to s3`);
+                    axios.post('/imageuploadstatus', { status: true })
+                        .then(res => {
+                            if (res.data.status) {
+                                console.log(`successfully updated to server`)
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+
+
                 }
             }).catch(err => {
                 console.log(err)
@@ -86,10 +98,8 @@ class index extends Component {
 
     _handleImageChange = e => {
         e.preventDefault();
-
         let reader = new FileReader();
         let file = e.target.files[0];
-
 
         reader.onloadend = () => {
             this.setState({
@@ -102,12 +112,9 @@ class index extends Component {
         reader.readAsDataURL(file)
     }
 
-
-
     render() {
         return (
             <ImageContainer>
-
                 {/* wrapper form for adding image */}
                 <AddImageWrapper onSubmit={this._handleSubmit}>
                     <AddImagePlaceholder >
@@ -116,7 +123,6 @@ class index extends Component {
                             type="file"
                             onChange={(e) => this._handleImageChange(e)}
                         />
-
                     </AddImagePlaceholder>
                     {/* preview the image that is about to be uploaded */}
                     {this.state.imagePreviewUrl ?
