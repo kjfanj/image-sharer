@@ -81,7 +81,7 @@ class index extends Component {
         ).then(res => {
             const imageName = res.config.data.name;
             const imageLocation = res.config.url.split("?")[0]
-            const path = imageLocation.split("us-east-2.amazonaws.com/")[1]
+            const path = imageLocation.split("amazonaws.com/")[1]
             const id = path.substring(0, 36);
             // response from s3
             if (res.status === 200) {
@@ -104,7 +104,7 @@ class index extends Component {
         })
             .then(res => {
                 if (res.data.didImageUpload) {
-                    console.log(`successfully updated to server`)
+                    console.log(`successfully inserted to database`)
                     this.setState({ description: "", file: "", imagePreviewUrl: "" });
                 }
             })
