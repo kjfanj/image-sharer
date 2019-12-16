@@ -43,7 +43,7 @@ class index extends Component {
     // maybe send uuid from here
     requestSignedUrl = async () => {
         try {
-            const response = await axios.post('/getsignedurl', { imageDescription: this.state.description, filename: this.state.file.name });
+            const response = await axios.post('/getsignedurl', { filename: this.state.file.name });
             return response.data.signedUrl;
         } catch (err) {
             console.log(err);
@@ -64,7 +64,6 @@ class index extends Component {
             // attempting to post to s3
             let signedUrl = await this.requestSignedUrl();
             this.uploadImageToS3(signedUrl);
-            this.setState({ description: "", file: "", imagePreviewUrl: "" });
         } catch (err) {
             console.log(err);
         }
@@ -80,17 +79,38 @@ class index extends Component {
                 }
             }
         ).then(res => {
-            console.log(`what is in s3 res`)
-            console.log(res)
+            const imageName = res.config.data.name;
+            const imageLocation = res.config.url.split("?")[0]
+            const path = imageLocation.split("us-east-2.amazonaws.com/")[1]
+            const id = path.substring(0, 36);
             // response from s3
             if (res.status === 200) {
                 // notify backend image upload success
                 console.log(`successfully uploaded to s3`);
-                this._imageUploaded();
+                this._notifyServerImageUploaded(id, imageName, imageLocation, this.state.description);
             }
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    _notifyServerImageUploaded = (id, imageName, imageLocation, imageDescription) => {
+        axios.post('/imageuploadstatus', {
+            didImageUpload: true,
+            id: id,
+            imageName: imageName,
+            imageLocation: imageLocation,
+            imageDescription: imageDescription
+        })
+            .then(res => {
+                if (res.data.didImageUpload) {
+                    console.log(`successfully updated to server`)
+                    this.setState({ description: "", file: "", imagePreviewUrl: "" });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     fileTypeCheck = () => {
@@ -103,18 +123,6 @@ class index extends Component {
             return false;
         }
         return true;
-    }
-
-    _imageUploaded = () => {
-        axios.post('/imageuploadstatus', { didImageUpload: true })
-            .then(res => {
-                if (res.data.didImageUpload) {
-                    console.log(`successfully updated to server`)
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }
 
     _handleImageChange = e => {

@@ -23,20 +23,11 @@ app.get('*', (req, res) => {
 
 // get presignedURL and send it back to client
 app.post('/getsignedurl', async (req, res) => {
-    let imageDescription = req.body.imageDescription;
     let curId = uuidv4();
     let keyPath = `${curId}-${req.body.filename}`;
-    let imageLocation = `https://image-sharer-app.s3.us-east-2.amazonaws.com/${keyPath}`;
     try {
         let signedUrl = await AWSApi.getSignedUrl(keyPath);
-        console.log(`successfully retrieved signedUrl from s3`);
-        console.log(`image lcoation will be ${imageLocation}`);
-        console.log(`signed url`);
-        console.log(signedUrl);
-
-        insertImage(curId, req.body.filename, imageLocation, imageDescription);
         res.send({ signedUrl: signedUrl });
-
     } catch (err) {
         console.log(err);
     }
@@ -47,7 +38,8 @@ app.post('/imageuploadstatus', (req, res) => {
     if (req.body.didImageUpload === true) {
         console.log(`image upload succeeded`);
         // update to database
-        res.send({ status: true });
+        insertImageToDB(req.body.id, req.body.imageName, req.body.imageLocation, req.body.imageDescription);
+        res.send({ didImageUpload: true });
     } else {
         console.log(`image upload failed`);
     }
@@ -76,9 +68,9 @@ client
             console.log(item.store_location)
         })
     })
-    .catch(e => console.error(e.stack))
+    .catch(e => console.error(e.stack));
 
-insertImage = async (imageId, ImageName, storeLocation, imageDescription) => {
+insertImageToDB = async (imageId, ImageName, storeLocation, imageDescription) => {
     console.log(`attempting to insert`)
     console.log([imageId, ImageName, storeLocation, imageDescription]);
     const text = 'INSERT INTO image(image_id, image_name, store_location, image_description, likes) VALUES($1, $2, $3, $4, $5) RETURNING *'
