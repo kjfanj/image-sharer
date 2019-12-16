@@ -33,6 +33,7 @@ app.post('/getsignedurl', async (req, res) => {
         console.log(`image lcoation will be ${imageLocation}`);
         console.log(`signed url`);
         console.log(signedUrl);
+
         insertImage(curId, req.body.filename, imageLocation, imageDescription);
         res.send({ signedUrl: signedUrl });
 
@@ -43,7 +44,7 @@ app.post('/getsignedurl', async (req, res) => {
 
 // check if client successfully added image
 app.post('/imageuploadstatus', (req, res) => {
-    if (req.body.status === true) {
+    if (req.body.didImageUpload === true) {
         console.log(`image upload succeeded`);
         // update to database
         res.send({ status: true });
@@ -67,24 +68,23 @@ client.connect()
 
 
 
-// client
-//     .query('select * from image')
-//     .then(res => {
-//         // console.table(res.rows)
-//         res.rows.map(item => {
-//             console.log(item.store_location)
-//         })
-//     })
-//     .catch(e => console.error(e.stack))
+client
+    .query('select * from image')
+    .then(res => {
+        // console.table(res.rows)
+        res.rows.map(item => {
+            console.log(item.store_location)
+        })
+    })
+    .catch(e => console.error(e.stack))
 
 insertImage = async (imageId, ImageName, storeLocation, imageDescription) => {
     console.log(`attempting to insert`)
     console.log([imageId, ImageName, storeLocation, imageDescription]);
-    const text = 'INSERT INTO image(image_id, image_name, store_location, image_description, likes) VALUES($1, $2, $3, $4, $5)'
+    const text = 'INSERT INTO image(image_id, image_name, store_location, image_description, likes) VALUES($1, $2, $3, $4, $5) RETURNING *'
     const values = [imageId, ImageName, storeLocation, imageDescription, 0]
     try {
-        const res = await client.query(text, values)
-        // console.log(res.rows[0])
+        await client.query(text, values)
     } catch (err) {
         console.log(err.stack)
     }

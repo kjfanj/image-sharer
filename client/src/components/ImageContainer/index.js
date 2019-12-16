@@ -54,46 +54,67 @@ class index extends Component {
         this.setState({ description: e.target.value });
     }
 
+
     _handleSubmit = async e => {
         e.preventDefault();
-        if (!this.state.file || !this.state.imagePreviewUrl) {
-            alert("Please select an image!!!")
+        if (!this.fileTypeCheck()) {
             return;
         }
         try {
             // attempting to post to s3
-            let signedURL = await this.requestSignedUrl();
-            axios.put(signedURL,
-                this.state.file,
-                {
-                    headers: {
-                        'content-type': 'multipart/form-data'
-                    }
-                }
-            ).then(res => {
-                // response from s3
-                if (res.status === 200) {
-                    // notify backend image upload success
-                    console.log(`successfully uploaded to s3`);
-                    axios.post('/imageuploadstatus', { status: true })
-                        .then(res => {
-                            if (res.data.status) {
-                                console.log(`successfully updated to server`)
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-
-
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+            let signedUrl = await this.requestSignedUrl();
+            this.uploadImageToS3(signedUrl);
             this.setState({ description: "", file: "", imagePreviewUrl: "" });
         } catch (err) {
             console.log(err);
         }
+
+    }
+
+    uploadImageToS3 = (signedUrl) => {
+        axios.put(signedUrl,
+            this.state.file,
+            {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+        ).then(res => {
+            console.log(`what is in s3 res`)
+            console.log(res)
+            // response from s3
+            if (res.status === 200) {
+                // notify backend image upload success
+                console.log(`successfully uploaded to s3`);
+                this._imageUploaded();
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    fileTypeCheck = () => {
+        if (!this.state.file || !this.state.imagePreviewUrl) {
+            alert(`Please select an image.`);
+            return false;
+        }
+        if (!this.state.file.name.match(/.(jpg|jpeg|png|gif)$/i)) {
+            alert(`file type must be either jpg, jpeg, png, gif`);
+            return false;
+        }
+        return true;
+    }
+
+    _imageUploaded = () => {
+        axios.post('/imageuploadstatus', { didImageUpload: true })
+            .then(res => {
+                if (res.data.didImageUpload) {
+                    console.log(`successfully updated to server`)
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     _handleImageChange = e => {
@@ -103,13 +124,13 @@ class index extends Component {
 
         reader.onloadend = () => {
             this.setState({
-                files: [file, ...this.state.files],
-                imagePreviewUrls: [reader.result, ...this.state.imagePreviewUrls],
                 file: file,
                 imagePreviewUrl: reader.result
             });
         }
-        reader.readAsDataURL(file)
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     }
 
     render() {
