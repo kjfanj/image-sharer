@@ -24,7 +24,8 @@ app.get('*', (req, res) => {
 // get presignedURL and send it back to client
 app.post('/getsignedurl', async (req, res) => {
     let imageDescription = req.body.imageDescription;
-    let keyPath = `${uuidv4()}-${req.body.filename}`;
+    let curId = uuidv4();
+    let keyPath = `${curId}-${req.body.filename}`;
     let imageLocation = `https://image-sharer-app.s3.us-east-2.amazonaws.com/${keyPath}`;
     try {
         let signedUrl = await AWSApi.getSignedUrl(keyPath);
@@ -32,8 +33,9 @@ app.post('/getsignedurl', async (req, res) => {
         console.log(`image lcoation will be ${imageLocation}`);
         console.log(`signed url`);
         console.log(signedUrl);
-
+        insertImage(curId, req.body.filename, imageLocation, imageDescription);
         res.send({ signedUrl: signedUrl });
+
     } catch (err) {
         console.log(err);
     }
@@ -44,7 +46,6 @@ app.post('/imageuploadstatus', (req, res) => {
     if (req.body.status === true) {
         console.log(`image upload succeeded`);
         // update to database
-
         res.send({ status: true });
     } else {
         console.log(`image upload failed`);
@@ -63,21 +64,27 @@ client.connect()
     .then(() => console.log("connected to database successfully"))
     .catch(err => console.log(err));
 
-client
-    .query('select * from image')
-    .then(res => {
-        // console.table(res.rows)
-        res.rows.map(item => {
-            console.log(item.store_location)
-        })
-    })
-    .catch(e => console.error(e.stack))
 
-insertImage = async () => {
+
+
+// client
+//     .query('select * from image')
+//     .then(res => {
+//         // console.table(res.rows)
+//         res.rows.map(item => {
+//             console.log(item.store_location)
+//         })
+//     })
+//     .catch(e => console.error(e.stack))
+
+insertImage = async (imageId, ImageName, storeLocation, imageDescription) => {
+    console.log(`attempting to insert`)
+    console.log([imageId, ImageName, storeLocation, imageDescription]);
+    const text = 'INSERT INTO image(image_id, image_name, store_location, image_description, likes) VALUES($1, $2, $3, $4, $5)'
+    const values = [imageId, ImageName, storeLocation, imageDescription, 0]
     try {
-        const res = await pool.query(text, values)
-        console.log(res.rows[0])
-        // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+        const res = await client.query(text, values)
+        // console.log(res.rows[0])
     } catch (err) {
         console.log(err.stack)
     }
