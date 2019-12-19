@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const uuidv4 = require('uuid/v4');
 
 const AWSApi = require('./AwsApi');
-// const DbAccess = require('./DbAccess');
+const DbAccess = require('./DbAccess');
 const app = express();
 
 // for json data from client
@@ -38,13 +38,13 @@ app.post('/imageuploadstatus', (req, res) => {
     if (req.body.didImageUpload === true) {
         console.log(`image upload succeeded`);
         // update to database
-        // DbAccess.insertImageToDB(req.body.id, req.body.imageName, req.body.imageLocation, req.body.imageDescription);
+        DbAccess.insertImageToDB(req.body.id, req.body.imageName, req.body.imageLocation, req.body.imageDescription);
         res.send({ didImageUpload: true });
     } else {
         console.log(`image upload failed`);
     }
 });
-// DbAccess.getAllImages();
+DbAccess.getAllImages();
 
 const port = process.env.PORT || 5000;
 app.listen(port);

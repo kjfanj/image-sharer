@@ -32,7 +32,7 @@ module.exports = {
         const text = 'INSERT INTO image(image_id, image_name, store_location, image_description, likes) VALUES($1, $2, $3, $4, $5) RETURNING *'
         const values = [imageId, ImageName, storeLocation, imageDescription, 0]
         try {
-            await client.query(text, values)
+            await client.query(text, values);
         } catch (err) {
             console.log(err.stack)
         }
