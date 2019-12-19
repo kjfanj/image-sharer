@@ -15,16 +15,13 @@ client.connect()
 
 
 module.exports = {
-    getAllImages: () => {
-        client
-            .query('SELECT * FROM image')
-            .then(res => {
-                // console.table(res.rows)
-                res.rows.map(item => {
-                    console.log(item)
-                })
-            })
-            .catch(e => console.error(e.stack));
+    getAllImages: async () => {
+        try {
+            let result = await client.query('SELECT * FROM image')
+            return result.rows
+        } catch (e) {
+            console.log(e)
+        }
     },
     insertImageToDB: async (imageId, ImageName, storeLocation, imageDescription) => {
         console.log(`attempting to insert`)

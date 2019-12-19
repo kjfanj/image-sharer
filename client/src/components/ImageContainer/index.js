@@ -40,6 +40,24 @@ class index extends Component {
             description: ""
         }
     }
+
+    componentDidMount() {
+        let imageDetails = this.getImagesDetails();
+        // imageDetails.then(e => {
+        //     console.log(e)
+        // })
+        console.log(`attempting to hit`)
+        imageDetails.then(e => {
+            console.log(e)
+        })
+    }
+
+
+    getImagesDetails = () => {
+        const response = axios.get('/getallimages');
+        return response;
+    }
+
     // maybe send uuid from here
     requestSignedUrl = async () => {
         try {

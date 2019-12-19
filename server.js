@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Index route
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
@@ -44,7 +44,25 @@ app.post('/imageuploadstatus', (req, res) => {
         console.log(`image upload failed`);
     }
 });
-DbAccess.getAllImages();
+
+app.get('/getallimages', async (req, res) => {
+    let getImages = DbAccess.getAllImages();
+    let imageDataList = [];
+    await getImages.then(images => {
+        imageData = images.forEach(image => {
+            let imageData = {};
+            imageData.storeLocation = image.store_location;
+            imageData.imageDescription = image.image_description;
+            imageData.imageName = image.image_name;
+            imageData.uploadedDateTime = image.uploaded_datetime;
+            imageDataList.push(imageData)
+        })
+    })
+        .catch(e => {
+            console.log(e)
+        })
+    res.send({ imageDataList: imageDataList })
+})
 
 const port = process.env.PORT || 5000;
 app.listen(port);
