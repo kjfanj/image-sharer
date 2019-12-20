@@ -23,10 +23,10 @@ const ImageDisplayContainter = styled.div`
     justify-content: center;
 `;
 
-// const NoImage = styled.div`
-//     padding-top: 2vh;
-//     color:${props => props.theme.text};
-// `;
+const NoImage = styled.div`
+    padding-top: 2vh;
+    color:${props => props.theme.text};
+`;
 
 class index extends Component {
 
@@ -43,12 +43,31 @@ class index extends Component {
 
     componentDidMount() {
         let imageDetails = this.getImagesDetails();
-        // imageDetails.then(e => {
-        //     console.log(e)
-        // })
-        console.log(`attempting to hit`)
-        imageDetails.then(e => {
+        imageDetails.then(res => {
+            if (res.status === 200) {
+                let imageDetails = res.data.imageDataList;
+                this.setState({ files: imageDetails })
+                console.log(this.state.files)
+            }
+
+        }).catch(e => {
             console.log(e)
+        })
+        this.state.files.map(image => {
+            axios
+                .get(
+                    image.storeLocation,
+                    { responseType: 'arraybuffer' },
+                )
+                .then(response => {
+                    const base64 = btoa(
+                        new Uint8Array(response.data).reduce(
+                            (data, byte) => data + String.fromCharCode(byte),
+                            '',
+                        ),
+                    );
+                    this.setState({ source: "data:;base64," + base64 });
+                });
         })
     }
 
@@ -186,19 +205,21 @@ class index extends Component {
                     />
                     <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
-                {/* {
-                    this.state.imagePreviewUrls.length === 0 ?
+                {
+                    this.state.files.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
-                        this.state.imagePreviewUrls.map((i) => {
+                        this.state.files.map((i) => {
+                            console.log("file")
+                            console.log(i)
                             return (
-                                <React.Fragment key={i}>
+                                <React.Fragment key={i.imageid}>
                                     <ImageDisplayContainter>
-                                        <ImageDisplay src={i} />
+                                        <ImageDisplay src={"d1gi0giv5bx0s9.cloudfront.net/" + i.imageId + "-" + i.imageName} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )
                         })
-                } */}
+                }
             </ImageContainer>
         )
     }

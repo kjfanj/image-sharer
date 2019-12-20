@@ -51,10 +51,11 @@ app.get('/getallimages', async (req, res) => {
     await getImages.then(images => {
         imageData = images.forEach(image => {
             let imageData = {};
-            imageData.storeLocation = image.store_location;
+            imageData.imageId = image.image_id;
             imageData.imageDescription = image.image_description;
             imageData.imageName = image.image_name;
             imageData.uploadedDateTime = image.uploaded_datetime;
+            imageData.storeLocation = `${process.env.CDN_URL}/${imageData.imageId}/${imageData.imageName}`;
             imageDataList.push(imageData)
         })
     })
