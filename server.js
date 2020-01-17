@@ -55,7 +55,7 @@ app.get('/getallimages', async (req, res) => {
             imageData.imageDescription = image.image_description;
             imageData.imageName = image.image_name;
             imageData.uploadedDateTime = image.uploaded_datetime;
-            imageData.storeLocation = `${process.env.CDN_URL}/${imageData.imageId}/${imageData.imageName}`;
+            imageData.storeLocation = `${process.env.CDN_URL}/${imageData.imageId}-${imageData.imageName}`;
             imageDataList.push(imageData)
         })
     })

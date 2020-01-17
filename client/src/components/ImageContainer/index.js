@@ -53,22 +53,27 @@ class index extends Component {
         }).catch(e => {
             console.log(e)
         })
-        this.state.files.map(image => {
-            axios
-                .get(
-                    image.storeLocation,
-                    { responseType: 'arraybuffer' },
-                )
-                .then(response => {
-                    const base64 = btoa(
-                        new Uint8Array(response.data).reduce(
-                            (data, byte) => data + String.fromCharCode(byte),
-                            '',
-                        ),
-                    );
-                    this.setState({ source: "data:;base64," + base64 });
-                });
-        })
+
+        //generate image
+        // "d1gi0giv5bx0s9.cloudfront.net/" + i.imageId + "-" + i.imageName
+
+
+        // this.state.files.map(image => {
+        //     axios
+        //         .get(
+        //             image.storeLocation,
+        //             { responseType: 'arraybuffer' },
+        //         )
+        //         .then(response => {
+        //             const base64 = btoa(
+        //                 new Uint8Array(response.data).reduce(
+        //                     (data, byte) => data + String.fromCharCode(byte),
+        //                     '',
+        //                 ),
+        //             );
+        //             this.setState({ source: "data:;base64," + base64 });
+        //         });
+        // })
     }
 
 
@@ -177,6 +182,23 @@ class index extends Component {
             reader.readAsDataURL(file);
         }
     }
+    // _fileToViewableImage = file => {
+    //     let reader = new FileReader();
+    //     let file = e.target.files[0];
+
+    //     reader.onloadend = () => {
+    //         this.setState({
+    //             file: file,
+    //             imagePreviewUrl: reader.result,
+    //             imagePreviewUrls: [this.this.state.imagePreviewUrl, ...this.state.imagePreviewUrls]
+    //         });
+    //     }
+    //     if (file) {
+    //         reader.readAsDataURL(file);
+    //     }
+    // }
+
+    // notes
 
     render() {
         return (
@@ -208,13 +230,13 @@ class index extends Component {
                 {
                     this.state.files.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
-                        this.state.files.map((i) => {
+                        this.state.imagePreviewUrls.map((i) => {
                             console.log("file")
                             console.log(i)
                             return (
-                                <React.Fragment key={i.imageid}>
+                                <React.Fragment key={i}>
                                     <ImageDisplayContainter>
-                                        <ImageDisplay src={"d1gi0giv5bx0s9.cloudfront.net/" + i.imageId + "-" + i.imageName} />
+                                        <ImageDisplay src={i} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )
