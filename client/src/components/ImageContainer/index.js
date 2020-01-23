@@ -235,8 +235,9 @@ class index extends Component {
                             console.log(i)
                             return (
                                 <React.Fragment key={i}>
+                                    <p>image is here</p>
                                     <ImageDisplayContainter>
-                                        <ImageDisplay src={i} />
+                                        <ImageDisplay src={"http://d1gi0giv5bx0s9.cloudfront.net/0a969eca-b3aa-4125-9c75-0feb059c4f1e-up.jpg"} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )
