@@ -41,8 +41,10 @@ class index extends Component {
         }
     }
 
+    // fetch images
     componentDidMount() {
         let imageDetails = this.getImagesDetails();
+
         imageDetails.then(res => {
             if (res.status === 200) {
                 let imageDetails = res.data.imageDataList;
@@ -227,17 +229,18 @@ class index extends Component {
                     />
                     <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
+                {/* display fetched images */}
                 {
                     this.state.files.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
-                        this.state.imagePreviewUrls.map((i) => {
-                            console.log("file")
+                        this.state.files.map((i) => {
                             console.log(i)
+                            console.log(i.storeLocation)
+                            console.log("d1gi0giv5bx0s9.cloudfront.net/" + i.imageId + "-" + i.imageName)
                             return (
-                                <React.Fragment key={i}>
-                                    <p>image is here</p>
+                                <React.Fragment key={i.storeLocation}>
                                     <ImageDisplayContainter>
-                                        <ImageDisplay src={"http://d1gi0giv5bx0s9.cloudfront.net/0a969eca-b3aa-4125-9c75-0feb059c4f1e-up.jpg"} />
+                                        <ImageDisplay src={`http://${i.storeLocation}`} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )
