@@ -48,7 +48,7 @@ class index extends Component {
             if (res.status === 200) {
                 let imageDetails = res.data.imageDataList;
                 this.setState({ files: imageDetails })
-                console.log(this.state.files)
+                console.log(imageDetails)
             }
         }).catch(e => {
             console.log(e)
@@ -61,7 +61,6 @@ class index extends Component {
         return response;
     }
 
-    // maybe send uuid from here
     requestSignedUrl = async () => {
         try {
             const response = await axios.post('/getsignedurl', { filename: this.state.file.name });
@@ -74,7 +73,6 @@ class index extends Component {
     handleDescriptionChange = e => {
         this.setState({ description: e.target.value });
     }
-
 
     _handleSubmit = async e => {
         e.preventDefault();
@@ -165,7 +163,6 @@ class index extends Component {
     render() {
         return (
             <ImageContainer>
-                {/* wrapper form for adding image */}
                 <AddImageWrapper onSubmit={this._handleSubmit}>
                     <AddImagePlaceholder >
                         CHOOSE IMAGE HERE
@@ -174,13 +171,11 @@ class index extends Component {
                             onChange={(e) => this._handleImageChange(e)}
                         />
                     </AddImagePlaceholder>
-                    {/* preview the image that is about to be uploaded */}
                     {this.state.imagePreviewUrl ?
                         <ImageDisplayContainter>
                             <ImageDisplay src={this.state.imagePreviewUrl} />
                         </ImageDisplayContainter> : ""
                     }
-                    {/* allow image to have description */}
                     <DescriptionInput
                         type="text"
                         value={this.state.description}
@@ -189,7 +184,6 @@ class index extends Component {
                     />
                     <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
-                {/* display fetched images */}
                 {
                     this.state.files.length === 0 ?
                         <NoImage>No Image atm</NoImage> :
@@ -197,6 +191,7 @@ class index extends Component {
                             return (
                                 <React.Fragment key={i.storeLocation}>
                                     <ImageDisplayContainter>
+                                        <ImageTitle title={i.imageName.split(".")[0]} />
                                         <ImageDisplay src={`http://${i.storeLocation}`} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
