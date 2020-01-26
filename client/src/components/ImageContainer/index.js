@@ -28,6 +28,10 @@ const NoImage = styled.div`
     color:${props => props.theme.text};
 `;
 
+const IsLoadingText = styled.p`
+    color:${props => props.theme.text};
+`;
+
 class index extends Component {
 
     constructor(props) {
@@ -200,7 +204,7 @@ class index extends Component {
                                 )
                             })
                         ) :
-                        <p>LOADING...</p>
+                        <IsLoadingText>LOADING...</IsLoadingText>
                 }
             </ImageContainer>
         )
