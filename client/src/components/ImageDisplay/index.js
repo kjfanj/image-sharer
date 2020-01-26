@@ -10,22 +10,23 @@ const ImageTitle = styled.p`
     /* align-items: center; */
     justify-content: center;
     color:${props => props.theme.text};
-    font-size: 25px;
+    font-size: 34px;
 `;
 
 const ImageDisplay = styled.img`
     width:100%;
-    max-width:80vw;
+    /* max-width:80vw; */
     height:100%;
     padding:10px;
 `;
 
 const ImageDescriptionBox = styled.div`
-
+    margin:10px;
 `;
 
 const ImageDescription = styled.p`
-    
+    font-size: 20px;
+
 `;
 
 
