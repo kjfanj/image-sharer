@@ -36,7 +36,8 @@ class index extends Component {
             files: [],
             file: "",
             imagePreviewUrl: "",
-            description: ""
+            description: "",
+            isLoading: false,
         }
     }
 
@@ -47,7 +48,8 @@ class index extends Component {
         imageDetails.then(res => {
             if (res.status === 200) {
                 let imageDetails = res.data.imageDataList;
-                this.setState({ files: imageDetails })
+                this.setState({ files: imageDetails, isLoading: true })
+
                 console.log(imageDetails)
             }
         }).catch(e => {
@@ -185,17 +187,20 @@ class index extends Component {
                     <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
                 {
-                    this.state.files.length === 0 ?
-                        <NoImage>No Image atm</NoImage> :
-                        this.state.files.map((i) => {
-                            return (
-                                <React.Fragment key={i.storeLocation}>
-                                    <ImageDisplayContainter >
-                                        <ImageDisplay imageData={i} />
-                                    </ImageDisplayContainter>
-                                </React.Fragment>
-                            )
-                        })
+                    this.state.isLoading ?
+                        (this.state.files.length === 0 ?
+                            <NoImage>No Image atm</NoImage> :
+                            this.state.files.map((i) => {
+                                return (
+                                    <React.Fragment key={i.storeLocation}>
+                                        <ImageDisplayContainter >
+                                            <ImageDisplay imageData={i} />
+                                        </ImageDisplayContainter>
+                                    </React.Fragment>
+                                )
+                            })
+                        ) :
+                        <p>LOADING...</p>
                 }
             </ImageContainer>
         )
