@@ -190,9 +190,8 @@ class index extends Component {
                         this.state.files.map((i) => {
                             return (
                                 <React.Fragment key={i.storeLocation}>
-                                    <ImageDisplayContainter>
-                                        <ImageTitle title={i.imageName.split(".")[0]} />
-                                        <ImageDisplay src={`http://${i.storeLocation}`} />
+                                    <ImageDisplayContainter >
+                                        <ImageDisplay imageData={i} />
                                     </ImageDisplayContainter>
                                 </React.Fragment>
                             )

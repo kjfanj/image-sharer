@@ -6,8 +6,11 @@ const ImageDisplayContainer = styled.div`
 `;
 
 const ImageTitle = styled.p`
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
     color:${props => props.theme.text};
-
+    font-size: 25px;
 `;
 
 const ImageDisplay = styled.img`
@@ -17,12 +20,24 @@ const ImageDisplay = styled.img`
     padding:10px;
 `;
 
+const ImageDescriptionBox = styled.div`
+
+`;
+
+const ImageDescription = styled.p`
+    
+`;
+
 
 const index = (props) => {
     return (
         <ImageDisplayContainer>
-            <ImageTitle>{props.title}</ImageTitle>
-            <ImageDisplay src={props.src} />
+            <ImageTitle>{props.imageData.imageName.split(".")[0]}</ImageTitle>
+            <ImageDisplay src={`http://${props.imageData.storeLocation}`} />
+
+            <ImageDescriptionBox>
+                <ImageDescription>{props.imageData.imageDescription}</ImageDescription>
+            </ImageDescriptionBox>
         </ImageDisplayContainer>
     );
 }
