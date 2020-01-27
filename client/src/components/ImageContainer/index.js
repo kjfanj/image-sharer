@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+
 import ImageDisplay from 'components/ImageDisplay';
 import { AddImageInput, AddImageWrapper, AddImagePlaceholder, DescriptionInput, Button } from 'components/ImageUploadPreview';
 
@@ -53,14 +54,11 @@ class index extends Component {
             if (res.status === 200) {
                 let imageDetails = res.data.imageDataList;
                 this.setState({ files: imageDetails, isLoading: true })
-
-                console.log(imageDetails)
             }
         }).catch(e => {
             console.log(e)
         })
     }
-
 
     getImagesDetails = () => {
         const response = axios.get('/getallimages');
@@ -92,7 +90,6 @@ class index extends Component {
         } catch (err) {
             console.log(err);
         }
-
     }
 
     uploadImageToS3 = (signedUrl) => {

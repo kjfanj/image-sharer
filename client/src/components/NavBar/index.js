@@ -46,9 +46,7 @@ export default class index extends Component {
                         <Link href="https://github.com/kjfanj/image-sharer" target="_blank" >
                             <ImageButton src={context.state.isDark ? githubLight : githubDark} />
                         </Link>
-
                         <Title >Image Sharer</Title>
-
                         <ImageButton src={context.state.isDark ? darkMode : lightMode} onClick={context.changeTheme} />
                     </NavBarContainer >
                 )}

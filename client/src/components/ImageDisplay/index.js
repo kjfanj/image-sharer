@@ -29,7 +29,6 @@ const ImageDescription = styled.p`
 
 `;
 
-
 const index = (props) => {
     return (
         <ImageDisplayContainer>
