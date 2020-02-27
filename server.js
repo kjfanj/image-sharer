@@ -27,6 +27,7 @@ app.post('/getsignedurl', async (req, res) => {
     let keyPath = `${curId}-${req.body.filename}`;
     try {
         let signedUrl = await AWSApi.getSignedUrl(keyPath);
+        console.log(`got signedUrl ${signedUrl}`)
         res.send({ signedUrl: signedUrl });
     } catch (err) {
         console.log(err);

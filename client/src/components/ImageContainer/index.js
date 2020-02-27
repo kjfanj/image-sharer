@@ -33,12 +33,21 @@ const IsLoadingText = styled.p`
     color:${props => props.theme.text};
 `;
 
+const ImagePreviewDisplay = styled.img`
+    /* width:100%; */
+    max-width:80vw;
+    /* height:100%; */
+    padding:10px;
+`;
+
+
 class index extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             files: [],
+            filesFromServer: [],
             file: "",
             imagePreviewUrl: "",
             description: "",
@@ -53,7 +62,7 @@ class index extends Component {
         imageDetails.then(res => {
             if (res.status === 200) {
                 let imageDetails = res.data.imageDataList;
-                this.setState({ files: imageDetails, isLoading: true })
+                this.setState({ filesFromServer: imageDetails, isLoading: true })
             }
         }).catch(e => {
             console.log(e)
@@ -176,7 +185,7 @@ class index extends Component {
                     </AddImagePlaceholder>
                     {this.state.imagePreviewUrl ?
                         <ImageDisplayContainter>
-                            <ImageDisplay src={this.state.imagePreviewUrl} />
+                            <ImagePreviewDisplay src={this.state.imagePreviewUrl} />
                         </ImageDisplayContainter> : ""
                     }
                     <DescriptionInput
@@ -187,15 +196,17 @@ class index extends Component {
                     />
                     <Button type="submit" >UPLOAD</Button>
                 </AddImageWrapper>
+
                 {
+
                     this.state.isLoading ?
-                        (this.state.files.length === 0 ?
+                        (this.state.filesFromServer.length === 0 ?
                             <NoImage>No Image atm</NoImage> :
-                            this.state.files.map((i) => {
+                            this.state.filesFromServer.map((data) => {
                                 return (
-                                    <React.Fragment key={i.storeLocation}>
+                                    <React.Fragment key={data.storeLocation}>
                                         <ImageDisplayContainter >
-                                            <ImageDisplay imageData={i} />
+                                            <ImageDisplay imageData={data} />
                                         </ImageDisplayContainter>
                                     </React.Fragment>
                                 )
