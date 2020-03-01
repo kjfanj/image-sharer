@@ -42,6 +42,7 @@ app.post('/imageuploadstatus', (req, res) => {
         DbAccess.insertImageToDB(req.body.id, req.body.imageName, req.body.imageLocation, req.body.imageDescription);
         res.send({ didImageUpload: true });
     } else {
+        // res.send({ didImageUpload: false });
         console.log(`image upload failed`);
     }
 });

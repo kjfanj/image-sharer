@@ -21,7 +21,6 @@ const ImageDisplayContainter = styled.div`
     display: flex;
     flex-direction:column;
     align-items: center;
-    justify-content: center;
 `;
 
 const NoImage = styled.div`
@@ -34,9 +33,8 @@ const IsLoadingText = styled.p`
 `;
 
 const ImagePreviewDisplay = styled.img`
-    /* width:100%; */
-    max-width:80vw;
-    /* height:100%; */
+    width:100%;
+    height:100%;
     padding:10px;
 `;
 
