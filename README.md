@@ -1,3 +1,3 @@
 # image-sharer
 
-a website to share images!
+A small project 
